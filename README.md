@@ -1,1 +1,1 @@
-# MeetInSport - Is is being develeoped 
+# MeetInSport - It is being develeoped 
