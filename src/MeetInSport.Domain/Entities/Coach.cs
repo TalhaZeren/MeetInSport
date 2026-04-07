@@ -15,7 +15,7 @@ namespace MeetInSport.Domain.Entities
         public string? Iban { get; set; }
         // Navigation Propertiy
         public virtual User User { get; set; } = null!;
-        public virtual ICollection<LessongPackage> Packages { get; set; } = new List<LessongPackage>();
+        public virtual ICollection<LessonPackage> Packages { get; set; } = new List<LessonPackage>();
         public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
 

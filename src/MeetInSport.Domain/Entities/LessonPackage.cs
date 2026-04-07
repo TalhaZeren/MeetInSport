@@ -3,7 +3,7 @@ using MeetInSport.Domain.Common;
 using MeetInSport.Domain.Enum;
 namespace MeetInSport.Domain.Entities
 {
-    public class LessongPackage : BaseEntity
+    public class LessonPackage : BaseEntity
     {
         public Guid CoachId { get; set; }
         public string PackageName { get; set; } = string.Empty; // Title

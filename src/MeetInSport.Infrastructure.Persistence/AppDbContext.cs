@@ -12,7 +12,7 @@ public class AppDbContext : DbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<Role> Roles => Set<Role>();
     public DbSet<Coach> Coaches => Set<Coach>();
-    public DbSet<LessongPackage> LessongPackages => Set<LessongPackage>();
+    public DbSet<LessonPackage> LessonPackages => Set<LessonPackage>();
     public DbSet<Reservation> Reservations => Set<Reservation>();
     public DbSet<Payment> Payments => Set<Payment>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
