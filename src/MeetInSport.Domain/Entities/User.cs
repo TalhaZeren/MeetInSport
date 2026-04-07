@@ -2,7 +2,6 @@
 namespace MeetInSport.Domain.Entities
 {
     using MeetInSport.Domain.Common;
-    using SportPlatform.Domain.Entities;
 
     public class User : BaseEntity
     {

@@ -1,6 +1,4 @@
-using MeetInSport.Domain.Entities;
-
-namespace SportPlatform.Domain.Entities;
+namespace MeetInSport.Domain.Entities;
 
 public class AuditLog
 {

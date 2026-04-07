@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using SportPlatform.Infrastructure.Persistence;
+using MeetInSport.Infrastructure.Persistance;
+using Microsoft.AspNetCore.Builder;
 
-var builder = WebbApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();

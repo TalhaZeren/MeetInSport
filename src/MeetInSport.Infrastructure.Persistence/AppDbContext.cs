@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MeetInSport.Domain.Entities;
 using System.Reflection;
-using SportPlatform.Domain.Entities;
 
 namespace MeetInSport.Infrastructure.Persistance;
 
