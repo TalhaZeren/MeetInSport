@@ -1,6 +1,4 @@
 using MeetInSport.Application.Interface.Repositories;
-using MeetInSport.Application.Interfaces.Repositories;
-using MeetInSport.Application.Interfaceş.Repositories;
 using MeetInSport.Infrastructure.Persistence.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 

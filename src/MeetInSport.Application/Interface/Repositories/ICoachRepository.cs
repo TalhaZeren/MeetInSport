@@ -1,7 +1,7 @@
 using MeetInSport.Application.Interface.Repositories;
 using MeetInSport.Domain.Entities;
 
-namespace MeetInSport.Application.Interfaceş.Repositories;
+namespace MeetInSport.Application.Interface.Repositories;
 
 public interface ICoachRepository : IGenericRepository<Coach>
 {

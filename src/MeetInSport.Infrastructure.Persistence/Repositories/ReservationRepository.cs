@@ -1,10 +1,10 @@
-using MeetInSport.Application.Interfaces.Repositories;
+using MeetInSport.Application.Interface.Repositories;
 using MeetInSport.Domain.Entities;
-using MeetInSport.Infrastructure.Persistance;
 using MeetInSport.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
+using MeetInSport.Infrastructure.Persistance;
 
-
+namespace MeetInSport.Infrastructure.Persistence.Repositories;
 public class ReservationRepository : GenericRepository<Reservation>, IReservationRepository
 {
 

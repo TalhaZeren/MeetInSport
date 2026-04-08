@@ -1,5 +1,4 @@
 using MeetInSport.Application.Interface.Repositories;
-using MeetInSport.Application.Interfaceş.Repositories;
 using MeetInSport.Domain.Entities;
 using MeetInSport.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;

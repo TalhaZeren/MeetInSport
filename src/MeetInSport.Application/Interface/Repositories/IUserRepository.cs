@@ -1,6 +1,6 @@
 using MeetInSport.Application.Interface.Repositories;
 using MeetInSport.Domain.Entities;
-namespace MeetInSport.Application.Interfaces.Repositories;
+namespace MeetInSport.Application.Interface.Repositories;
 
 public interface IUserRepository : IGenericRepository<User>
 {
