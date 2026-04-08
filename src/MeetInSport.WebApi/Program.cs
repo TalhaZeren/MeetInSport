@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MeetInSport.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Builder;
+using MeetInSport.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configure CORS (Allow React frontend on port 3000 to communicate with this API)
+
+builder.Services.AddInfrastructure(); // Register infrastructure services.
 
 builder.Services.AddCors(options =>
 {
