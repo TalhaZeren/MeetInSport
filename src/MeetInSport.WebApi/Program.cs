@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MeetInSport.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Builder;
 using MeetInSport.Infrastructure.Persistence;
+using MeetInSport.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

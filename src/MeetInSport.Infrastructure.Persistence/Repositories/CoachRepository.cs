@@ -20,7 +20,8 @@ public class CoachRepository : GenericRepository<Coach>, ICoachRepository
         //.Include() is critical because It telss EF to load the related packages when fetching the coach.This is a sort of SQL JOIN operation.
         return await _dbSet
         .Include(c => c.Packages)
-        .Include(c => c.User).FirstOrDefaultAsync(c => c.Id == coachId);
+        .Include(c => c.User)
+        .FirstOrDefaultAsync(c => c.Id == coachId);
 
         // We list the packages and User information on the packages according to the coachId by joining them.
     }
