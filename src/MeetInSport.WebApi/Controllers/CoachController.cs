@@ -1,9 +1,9 @@
 using MeetInSport.Application.DTOs.Coach;
 using MeetInSport.Application.Interface.Services;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Authorization; 
 namespace MeetInSport.WebApi.Controllers;
-
+[Authorize]
 [ApiController]
 [Route("api/v1/coaches")]
 public class CoachController : ControllerBase
@@ -14,14 +14,14 @@ public class CoachController : ControllerBase
     {
         _coachService = coachService;
     }
-
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CoachResponseDto>>> GetAllCoaches()
     {
         var coaches = await _coachService.GetAllCoachesAsync();
         return Ok(coaches);
     }
-
+    [AllowAnonymous]    
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<CoachResponseDto>> GetCoachById(Guid id)
     {
@@ -33,6 +33,7 @@ public class CoachController : ControllerBase
         return Ok(coach);
     }
     // GET: api/v1/coaches/sport/{sport}
+    [AllowAnonymous]    
     [HttpGet("sport/{sport}")]
     public async Task<ActionResult<IEnumerable<CoachResponseDto>>> GetCoachesBySport(string sport)
     {

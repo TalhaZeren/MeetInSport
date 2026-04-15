@@ -9,6 +9,6 @@ public class CoachResponseDto
     public string? Bio { get; set; } = string.Empty;
     public decimal HourlyRate { get; set; }
     public int Experience { get; set; }
-    public decimal AvarageRating { get; set; }
+    public decimal AverageRating { get; set; }
     public string? Location { get; set; }
 }

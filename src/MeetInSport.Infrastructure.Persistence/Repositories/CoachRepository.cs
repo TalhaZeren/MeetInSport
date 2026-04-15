@@ -33,4 +33,11 @@ public class CoachRepository : GenericRepository<Coach>, ICoachRepository
         .Take(count)
         .ToListAsync();
     }
+
+    public async Task<IReadOnlyList<Coach>> GetAllCoachesWithDetailsAsync()
+    {
+        // We tell the EF core to do a SQL JOIN on the Users table!
+        return await _dbSet.Include(c => c.User).ToListAsync();
+    }
+
 }

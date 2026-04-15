@@ -22,4 +22,6 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         return !await _dbSet.AnyAsync(u => u.Email == email);
     }
 
+    
+
 }

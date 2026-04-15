@@ -19,7 +19,7 @@ public class CoachService : ICoachService
     // By defining with Enumerable, We can actually iterate through the collection of coaches.
     public async Task<IEnumerable<CoachResponseDto>> GetAllCoachesAsync()
     {
-        var coaches = await _coachRepository.GetAllAsync();
+        var coaches = await _coachRepository.GetAllCoachesWithDetailsAsync();
         return _mapper.Map<IEnumerable<CoachResponseDto>>(coaches);
     }
 
