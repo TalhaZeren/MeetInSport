@@ -11,7 +11,7 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<ICoachService, CoachService>();
-
+        services.AddScoped<IAuthService, AuthService>();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly()); // This line is added to register AutoMapper and scan the current assembly for mapping profiles.  
         return services;

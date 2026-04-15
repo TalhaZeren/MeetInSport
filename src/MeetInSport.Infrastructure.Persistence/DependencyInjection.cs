@@ -1,5 +1,6 @@
 using MeetInSport.Application.Interface.Repositories;
 using MeetInSport.Infrastructure.Persistence.Repositories;
+using MeetInSport.Infrastructure.Persistence.Seeders;
 using Microsoft.Extensions.DependencyInjection;
 
 
@@ -16,6 +17,7 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ICoachRepository, CoachRepository>();
         services.AddScoped<IReservationRepository, ReservationRepository>();
+        services.AddTransient<DataBaseSeeder>();  // AddTrasient provides us to throw these information away from the memoryç
 
         return services;
     }
