@@ -6,7 +6,6 @@ namespace MeetInSport.Application.Mappings;
 
 public class CoachProfile : Profile
 {
-    // Tell AutoMapper: "Translate from Coach (Database) to CoachResponseDto (Frontend)"
     public CoachProfile()
     {
         CreateMap<Coach, CoachResponseDto>()

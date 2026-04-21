@@ -17,8 +17,8 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ICoachRepository, CoachRepository>();
         services.AddScoped<IReservationRepository, ReservationRepository>();
+        services.AddScoped<ILessonPackageRepository, LessonPackageRepository>();
         services.AddTransient<DataBaseSeeder>();  // AddTrasient provides us to throw these information away from the memoryç
-
         return services;
     }
 }

@@ -1,4 +1,5 @@
 using MeetInSport.Application.DTOs.Coach;
+using MeetInSport.Domain.Entities;
 
 namespace MeetInSport.Application.Interface.Services;
 

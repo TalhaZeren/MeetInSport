@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization; // Add this!
 
 namespace MeetInSport.WebApi.Controllers;
+
 [Authorize]
 [ApiController]
 [Route("api/v1/auth")]

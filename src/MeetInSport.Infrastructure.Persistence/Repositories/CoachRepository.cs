@@ -7,7 +7,6 @@ namespace MeetInSport.Infrastructure.Persistence.Repositories;
 
 public class CoachRepository : GenericRepository<Coach>, ICoachRepository
 {
-
     public CoachRepository(AppDbContext context) : base(context) { }
 
     public async Task<IReadOnlyList<Coach>> GetCoachesBySportAsync(string sport)
@@ -40,4 +39,8 @@ public class CoachRepository : GenericRepository<Coach>, ICoachRepository
         return await _dbSet.Include(c => c.User).ToListAsync();
     }
 
+    public async Task<Coach?> GetCoachByUserIdAsync(Guid userId)
+    {
+        return await _dbSet.FirstOrDefaultAsync(c => c.UserId == userId);
+    }
 }

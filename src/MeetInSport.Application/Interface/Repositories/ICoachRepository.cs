@@ -13,4 +13,5 @@ public interface ICoachRepository : IGenericRepository<Coach>
     Task<Coach?> GetCoachWithPackagesAsync(Guid coachId);
     // Top Rated Coaches for the homepage
     Task<IReadOnlyList<Coach>> GetTopRatedCoachesAsync(int count);
+    Task<Coach?> GetCoachByUserIdAsync(Guid userId);
 }

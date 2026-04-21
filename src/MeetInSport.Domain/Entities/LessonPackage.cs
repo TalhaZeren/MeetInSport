@@ -10,7 +10,7 @@ namespace MeetInSport.Domain.Entities
         public string PackageDescription { get; set; } = string.Empty;
         public decimal DurationInMinutes { get; set; }
         public decimal PackagePrice { get; set; } // Price
-        public ICollection<string> Requirements { get; set; } = new List<string>();
+        public List<string> Requirements { get; set; } = new List<string>();
         public LocationType LocationType { get; set; } = LocationType.CoachLocation;
         public bool IsActive { get; set; }
         public LessonModel LessonModel { get; set; } = LessonModel.OneOnOne;
