@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using MeetInSport.Infrastructure.Persistance;
 
 namespace MeetInSport.Infrastructure.Persistence.Repositories;
+
 public class ReservationRepository : GenericRepository<Reservation>, IReservationRepository
 {
 
