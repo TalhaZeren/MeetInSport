@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using MeetInSport.Application.DTOs.Coach;
 using MeetInSport.Application.Interface.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -40,5 +41,17 @@ public class CoachController : ControllerBase
     {
         var coach = await _coachService.GetCoachesBySportAsync(sport);
         return Ok(coach);
+    }
+    [HttpPut("profile")]
+    public async Task<ActionResult<CoachResponseDto>> UpdateProfile([FromBody] UpdateCoachProfileDto updateCoachProfileDto)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out Guid userId))
+        {
+            return Unauthorized(new { message = "Invalid token claims." });
+        }
+        var response = await _coachService.UpdateProfileAsync(userId, updateCoachProfileDto);
+        return Ok(response);
     }
 }

@@ -32,4 +32,18 @@ public class ReservationController : ControllerBase
         return Created("", response);
     }
 
+    [HttpGet("me")]
+    public async Task<ActionResult<IEnumerable<ReservationResponseDto>>> GetMyReservation()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var roleClaim = User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out Guid userId) || string.IsNullOrEmpty(roleClaim))
+        {
+            return Unauthorized(new { message = "Invalid token claims." });
+        }
+        var reservations = await _reservationService.GetMyReservationsAsync(userId, roleClaim);
+        return Ok(reservations);
+    }
 }
