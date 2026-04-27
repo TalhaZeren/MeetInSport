@@ -25,6 +25,42 @@ public class ReservationService : IReservationService
         _coachRepository = coachRepository;
     }
 
+    public async Task<ReservationResponseDto> CancelReservationAsync(Guid reservationId, Guid userId, string role, CancelReservationDto cancelReservationDto)
+    {
+        var reservation = await _reservationRepository.GetByIdAsync(reservationId) ?? throw new NotFoundException(nameof(Domain.Entities.Reservation), reservationId);
+
+        if (role == "Coach")
+        {
+            var coach = await _coachRepository.GetCoachByUserIdAsync(userId);
+            if (coach == null || reservation.CoachId != coach.Id)
+            {
+                throw new UnauthorizedAccessException("Bu rezervasyonu iptal etmeye yetkiniz bulunmamaktadır.");
+            }
+        }
+        else
+        {
+            if (reservation.StudentId != userId)
+            {
+                throw new UnauthorizedAccessException("Bu rezervasyonu iptal etmeye yetkiniz bulunmamaktadır.");
+            }
+        }
+
+        if (reservation.Status == ReservationStatus.Cancelled || reservation.Status == ReservationStatus.Completed)
+        {
+            throw new InvalidOperationException($"Rezervasyon iptal edilemez. Durum : {reservation.Status}.");
+        }
+
+        reservation.Status = ReservationStatus.Cancelled;
+        reservation.CancelledAt = DateTime.UtcNow;
+        reservation.CancelReason = cancelReservationDto.CancelReason;
+        reservation.UpdatedAt = DateTime.UtcNow;
+
+        _reservationRepository.Update(reservation);
+        await _reservationRepository.SaveChangesAsync();
+
+        return _mapper.Map<ReservationResponseDto>(reservation);
+    }
+
     public async Task<ReservationResponseDto> CreateReservationAsync(CreateReservationDto createReservationDto, Guid studentId)
     {
         // Verify whether the package is exit or not;

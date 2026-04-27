@@ -46,4 +46,30 @@ public class ReservationController : ControllerBase
         var reservations = await _reservationService.GetMyReservationsAsync(userId, roleClaim);
         return Ok(reservations);
     }
+    [HttpPut("{id:guid}/cancel")]
+    public async Task<ActionResult<ReservationResponseDto>> CancelReservationAsync(Guid id, [FromBody] CancelReservationDto cancelReservationDto)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var roleClaim = User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out Guid userId) || string.IsNullOrEmpty(roleClaim))
+        {
+
+            return Unauthorized(new { message = "Geçersiz Token Isteği" });
+        }
+        try
+        {
+            var response = await _reservationService.CancelReservationAsync(id, userId, roleClaim, cancelReservationDto);
+            return Ok(response);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return StatusCode(403, new { message = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
 }
