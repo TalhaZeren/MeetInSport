@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using MeetInSport.Application.DTOs.LessonPackage;
 using MeetInSport.Application.Interface.Services;
+using MeetInSport.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
@@ -37,9 +38,27 @@ public class LessonPackageController : ControllerBase
     [HttpGet("coach/{coachId:guid}")]
     public async Task<ActionResult<IEnumerable<LessonPackageResponseDto>>> GetPackagesByCoachIdAsync(Guid coachId)
     {
-    
+
         var packages = await _lessonPackageService.GetPackagesByCoachIdAsync(coachId);
         return Ok(packages);
     }
-
+    // DELETE: api/v1/packages/{id}
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult> DeletePackage(Guid id)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out Guid userId))
+        {
+            return Unauthorized();
+        }
+        try
+        {
+            await _lessonPackageService.DeletePackageAsync(id, userId);
+            return NoContent();
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return StatusCode(403, new { message = ex.Message });
+        }
+    }
 }

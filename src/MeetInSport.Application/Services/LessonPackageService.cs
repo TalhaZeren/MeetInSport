@@ -48,6 +48,22 @@ public class LessonPackageService : ILessonPackageService
         return _mapper.Map<LessonPackageResponseDto>(packageEntity);
     }
 
+    public async Task DeletePackageAsync(Guid packageId, Guid userId)
+    {
+        var package = await _lessonPackageRepository.GetByIdAsync(packageId) ?? throw new NotFoundException(nameof(LessonPackage), packageId);
+
+        var coach = await _coachRepository.GetCoachByUserIdAsync(userId);
+
+        if (coach == null || package.CoachId != coach.Id)
+        {
+            throw new UnauthorizedAccessException("Bu pakete sahip değilsiniz.");
+        }
+        // Even though we wrote Delete method which means package will be deleted,
+        //  AddDbContext will understand what it means and will intercept it.
+        _lessonPackageRepository.Delete(package);
+        await _lessonPackageRepository.SaveChangesAsync();
+    }
+
     public async Task<IEnumerable<LessonPackageResponseDto>> GetPackagesByCoachIdAsync(Guid coachId)
     {
         var packages = await _lessonPackageRepository.GetPackagesByCoachIdAsync(coachId);
