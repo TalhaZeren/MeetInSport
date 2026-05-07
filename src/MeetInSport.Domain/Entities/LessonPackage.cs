@@ -18,13 +18,5 @@ namespace MeetInSport.Domain.Entities
         public virtual Coach Coach { get; set; } = null!;
         public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>(); // 1 to N relationship between LessonPackage and. Reservation.
 
-
-
-
-
-
-
-
-
     }
 }

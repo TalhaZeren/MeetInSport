@@ -11,7 +11,7 @@ public class CoachRepository : GenericRepository<Coach>, ICoachRepository
 
     public async Task<IReadOnlyList<Coach>> GetCoachesBySportAsync(string sport)
     {
-        return await _dbSet.Where(c => c.Sport.ToLower() == sport.ToLower() && c.IsApproved).ToListAsync();
+        return await _dbSet.Include(c => c.Sports).Where(c => c.Sports.Name.ToLower() == sport.ToLower() && c.IsApproved).ToListAsync();
     }
 
     public async Task<Coach?> GetCoachWithPackagesAsync(Guid coachId)
@@ -36,11 +36,24 @@ public class CoachRepository : GenericRepository<Coach>, ICoachRepository
     public async Task<IReadOnlyList<Coach>> GetAllCoachesWithDetailsAsync()
     {
         // We tell the EF core to do a SQL JOIN on the Users table!
-        return await _dbSet.Include(c => c.User).ToListAsync();
+        return await _dbSet.Include(c => c.User).Include(c => c.Sports).ToListAsync();
+    }
+
+    public new async Task<Coach?> GetByIdAsync(Guid id)
+    {
+        return await _dbSet.Include(c => c.User).Include(c => c.Sports).FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task<Coach?> GetCoachByUserIdAsync(Guid userId)
     {
         return await _dbSet.FirstOrDefaultAsync(c => c.UserId == userId);
+    }
+
+    public async Task<Coach?> GetByUserIdAsync(Guid userId)
+    {
+        return await _context.Set<Coach>()
+        .Include(c => c.Sports)
+        .Include(c => c.Packages)
+        .FirstOrDefaultAsync(c => c.UserId == userId && !c.IsDeleted);
     }
 }

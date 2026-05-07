@@ -16,6 +16,7 @@ public class AppDbContext : DbContext
     public DbSet<Reservation> Reservations => Set<Reservation>();
     public DbSet<Payment> Payments => Set<Payment>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<Sports> Sports { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -31,29 +32,30 @@ public class AppDbContext : DbContext
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-       foreach (var entry in ChangeTracker.Entries<MeetInSport.Domain.Common.BaseEntity>())
-       {
-           switch(entry.State){
-            case EntityState.Added:
-            
-                entry.Entity.CreatedAt = DateTime.UtcNow;
-                break;
+        foreach (var entry in ChangeTracker.Entries<MeetInSport.Domain.Common.BaseEntity>())
+        {
+            switch (entry.State)
+            {
+                case EntityState.Added:
 
-            case EntityState.Modified:
-                entry.Entity.UpdatedAt = DateTime.UtcNow;
-                break;
+                    entry.Entity.CreatedAt = DateTime.UtcNow;
+                    break;
 
-            case EntityState.Deleted: 
-                // First we change the process as Modified instead of Deleted 
-                entry.State = EntityState.Modified;
-                // we have assigned as true to IsDeleted.
-                entry.Entity.IsDeleted = true;
-                // we have assigned as DateTime.Now to UpdatedAt.
-                entry.Entity.UpdatedAt = DateTime.UtcNow;
-                break;
-           }
-       }
-       return base.SaveChangesAsync(cancellationToken);
+                case EntityState.Modified:
+                    entry.Entity.UpdatedAt = DateTime.UtcNow;
+                    break;
+
+                case EntityState.Deleted:
+                    // First we change the process as Modified instead of Deleted 
+                    entry.State = EntityState.Modified;
+                    // we have assigned as true to IsDeleted.
+                    entry.Entity.IsDeleted = true;
+                    // we have assigned as DateTime.Now to UpdatedAt.
+                    entry.Entity.UpdatedAt = DateTime.UtcNow;
+                    break;
+            }
+        }
+        return base.SaveChangesAsync(cancellationToken);
     }
 
 

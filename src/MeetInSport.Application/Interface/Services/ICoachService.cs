@@ -9,6 +9,7 @@ public interface ICoachService
     Task<CoachResponseDto?> GetCoachByIdAsync(Guid coachId);
     Task<IEnumerable<CoachResponseDto>> GetCoachesBySportAsync(string sport);
     Task<CoachResponseDto> UpdateProfileAsync(Guid userId, UpdateCoachProfileDto updateCoachProfileDto);
+    Task<CoachResponseDto> GetMyProfileAsync(Guid userId);
 
 }
 

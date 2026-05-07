@@ -1,5 +1,5 @@
 using MeetInSport.Application.DTOs.Auth;
-using MeetInSport.Application.Exceptions; // Our custom exceptions!
+using MeetInSport.Application.Exceptions;
 using MeetInSport.Application.Interface.Repositories;
 using MeetInSport.Application.Interface.Services;
 using MeetInSport.Domain.Entities;
@@ -9,14 +9,14 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-using BCryptNet = BCrypt.Net.BCrypt; // to prevent the possible conflict.
+using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace MeetInSport.Application.Services;
 
 public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
-    private readonly IConfiguration _configuration;  // 
+    private readonly IConfiguration _configuration;
 
     public AuthService(IUserRepository userRepository, IConfiguration configuration)
     {
@@ -24,13 +24,13 @@ public class AuthService : IAuthService
         _configuration = configuration;
     }
 
-    // Login Process.
     public async Task<LoginResponseDto> LoginAsync(LoginRequestDto loginRequestDto)
     {
         var user = await _userRepository.GetUserByEmailAsync(loginRequestDto.Email);
 
-        if (user == null || !BCryptNet.Verify(loginRequestDto.Password, user.PasswordHash))
+        if (user == null || string.IsNullOrEmpty(loginRequestDto.Password) || !BCryptNet.Verify(loginRequestDto.Password, user.PasswordHash))
         {
+            // Now it safely throws a normal exception, which your middleware will handle gracefully
             throw new Exception("Invalid email or password");
         }
 
@@ -62,10 +62,10 @@ public class AuthService : IAuthService
             Token = tokenHandler.WriteToken(token),
             UserId = user.Id,
             Name = user.Name,
-            Role = user.Role.RoleName
+            Role = user.Role.RoleName,
+            Email = user.Email
         };
     }
-    // Register Process.
 
     public async Task<AuthResponseDto> RegisterAsync(RegisterRequestDto registerRequestDto)
     {
@@ -75,23 +75,32 @@ public class AuthService : IAuthService
             throw new Exception("Email is already in use.");
         }
 
-        string hashedPassword = BCryptNet.HashPassword(registerRequestDto.Password); // generate a hashed password;
+        string hashedPassword = BCryptNet.HashPassword(registerRequestDto.Password);
 
         var newUser = new User
         {
             Id = Guid.NewGuid(),
             Name = registerRequestDto.Name,
             Email = registerRequestDto.Email,
-            PasswordHash = hashedPassword, // We stored the hash not the raw password.
+            PasswordHash = hashedPassword,
             RoleId = registerRequestDto.RoleId,
             CreatedAt = DateTime.UtcNow,
             IsActive = true
         };
 
-        if(registerRequestDto.RoleId == 2){
-            newUser.CoachProfile = new Coach{
+        // --- NEW LOGIC FOR SPORT ID ---
+        if (registerRequestDto.RoleId == 2)
+        {
+            // Business Rule: Coaches MUST provide a valid SportId
+            if (registerRequestDto.SportId == null || registerRequestDto.SportId == Guid.Empty)
+            {
+                throw new Exception("A valid Sport is required to register as a Coach.");
+            }
+
+            newUser.CoachProfile = new Coach
+            {
                 Id = Guid.NewGuid(),
-                Sport = string.IsNullOrWhiteSpace(registerRequestDto.Sport) ? "Not Specified" : registerRequestDto.Sport,
+                SportId = registerRequestDto.SportId.Value, // Map the new Guid relationship
                 HourlyRate = 0.00m,
                 Experience = 0,
                 AverageRating = 0.0m,
@@ -100,10 +109,10 @@ public class AuthService : IAuthService
                 Location = "Not Specified",
                 Iban = "Not Specified"
             };
-        };
+        }
+        ;
 
         await _userRepository.AddAsync(newUser);
-
         await _userRepository.SaveChangesAsync();
 
         return new AuthResponseDto
@@ -112,9 +121,8 @@ public class AuthService : IAuthService
             RoleId = newUser.RoleId,
             Name = newUser.Name,
             Email = newUser.Email,
-            Sport = registerRequestDto.Sport,
-            Message = "Registeration is successful!"
+            // Removed the faulty 'Sport = registerRequestDto.S' mapping
+            Message = "Registration is successful!"
         };
     }
 }
-

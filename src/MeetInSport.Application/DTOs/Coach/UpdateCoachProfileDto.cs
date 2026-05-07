@@ -2,7 +2,7 @@ namespace MeetInSport.Application.DTOs.Coach;
 
 public class UpdateCoachProfileDto
 {
-    public string Sport { get; set; } = string.Empty;
+    public Guid SportId { get; set; }
     public string? Bio { get; set; }
     public decimal HourlyRate { get; set; }
     public int Experience { get; set; }

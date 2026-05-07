@@ -54,4 +54,18 @@ public class CoachController : ControllerBase
         var response = await _coachService.UpdateProfileAsync(userId, updateCoachProfileDto);
         return Ok(response);
     }
+
+    [HttpGet("me")]
+    [Authorize(Roles = "Coach")]
+    public async Task<IActionResult> GetMyProfile()
+    {
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out Guid userId))
+        {
+            return Unauthorized(new { message = "Invalid token claims." });
+        }
+        var profile = await _coachService.GetMyProfileAsync(userId);
+        return Ok(profile);
+    }
 }
